@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Live Valorant Esports</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">Live Valorant Esports</h1>
+      <div class="columns">
+        <div class="column is-two-thirds">
+          <div class="box">
+            <h2 class="subtitle">Partidas ao vivo</h2>
+            <table class="table is-fullwidth">
+              <thead>
+                <tr>
+                  <th>Equipe A</th>
+                  <th>Pontos</th>
+                  <th>Equipe B</th>
+                </tr>
+              </thead>
+              <tbody id="live-matches-table"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="column">
+          <div class="box">
+            <h2 class="subtitle">Próximas partidas</h2>
+            <table class="table is-fullwidth">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Equipe A</th>
+                  <th>Equipe B</th>
+                </tr>
+              </thead>
+              <tbody id="upcoming-matches-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+      // Obtenha os dados da API
+      var apiKey = "";
+      var liveMatchesEndpoint = "https://esports-api.service.valorantesports.com/live-matches";
+      var upcomingMatchesEndpoint = "https://esports-api.service.valorantesports.com/upcoming-matches";
+      var liveMatchesData;
+      var upcomingMatchesData;
+
+      function getLiveMatchesData() {
+        $.ajax({
+          url: liveMatchesEndpoint,
+          headers: {
+            "Authorization": "Bearer " + apiKey
+          },
+          method: "GET",
+          dataType: "json",
+          success: function(data) {
+            liveMatchesData = data;
+            updateLiveMatchesTable();
+          }
+        });
+      }
+
+      function getUpcomingMatchesData() {
+        $.ajax({
+          url: upcomingMatchesEndpoint,
+          headers: {
+            "Authorization": "Bearer " + apiKey
+          },
+          method: "GET",
+          dataType: "json",
+          success: function(data) {
+            upcomingMatchesData = data;
+            updateUpcomingMatchesTable();
+          }
+        });
+      }
+
+      // Atualiza as tabelas com os dados obtidos da API
+      function updateLiveMatchesTable() {
+        var tableHtml = "";
+        for (var i = 0; i < liveMatchesData.length; i++) {
+          var match = liveMatchesData[i];
+          tableHtml += "<tr>";
+          tableHtml += "<td>" + match.teamA.name + "</td>";
+          tableHtml += "<td>" + match
